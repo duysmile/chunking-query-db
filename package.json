@@ -1,0 +1,23 @@
+{
+  "name": "chunking-query-db",
+  "version": "1.0.0",
+  "description": "Test performance if chunking query with MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/duysmile/chunking-query-db.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/duysmile/chunking-query-db/issues"
+  },
+  "homepage": "https://github.com/duysmile/chunking-query-db#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^4.0.1"
+  }
+}
