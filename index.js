@@ -87,6 +87,7 @@ async function main() {
     app.get("/call-with-chunk", async (req, res) => {
         try {
             // CPU reach 100%, not block EL and get data in http status 200
+            console.time('get data with chunk');
             const client = new MongoClient(url);
             await client.connect();
             console.log('Connected successfully to db');
@@ -113,7 +114,7 @@ async function main() {
                 }, count);
             }
 
-
+            console.timeEnd('get data with chunk');
             res.json(count);
         } catch (error) {
             console.error(error);
@@ -121,9 +122,10 @@ async function main() {
         }
     });
 
-    app.get("/call-with-chunk-and-worker", async (req, res) => {
+    app.get("/call-with-chunk-optimize", async (req, res) => {
         try {
-            // CPU reach 100%, not block EL and get data in http status 200
+            // CPU reach 100%, not block EL and get data in http status 200, and faster
+            console.time('get data with chunk optimize');
             const client = new MongoClient(url);
             await client.connect();
             console.log('Connected successfully to db');
@@ -139,7 +141,11 @@ async function main() {
                 if (lastId) {
                     condition._id = { $gt: ObjectId(lastId) };
                 }
-                const messages = await collection.find(condition).limit(1000).toArray();
+                const messages = await collection
+                    .find(condition)
+                    .project({botId: 1}) // this line make the magic come true
+                    .limit(1000)
+                    .toArray();
                 if (messages.length == 0) {
                     break;
                 }
@@ -150,7 +156,7 @@ async function main() {
                 }, count);
             }
 
-
+            console.timeEnd('get data with chunk optimize');
             res.json(count);
         } catch (error) {
             console.error(error);
